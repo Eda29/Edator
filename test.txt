@@ -1,0 +1,2 @@
+This is a test of the text editor's capabilities.
+This is a second line in the text file.
