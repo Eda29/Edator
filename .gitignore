@@ -5,3 +5,12 @@ CMakeCache.txt
 CMakeDeps.cmake
 Makefile
 Text_Editor
+Release/
+x64/
+ALL_BUILD.vcxproj
+ALL_BUILD.vcxproj.filters
+Text_Editor.sln
+Text_Editor.vcxproj
+Text_Editor.vcxproj.filters
+ZERO_CHECK.vcxproj
+ZERO_CHECK.vcxproj.filters
