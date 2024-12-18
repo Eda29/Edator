@@ -7,6 +7,6 @@ typedef struct Config{
     bool use_external_scripts;
 } Config;
 
-bool GetConfig(_Out_ Config* config);
+bool _Success_(return != false) GetConfig(_Out_opt_ Config * config);
 void FreeConfig(_In_ Config* config);
 

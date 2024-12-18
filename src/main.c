@@ -7,9 +7,12 @@
 #include "config.h"
 #include "gap_buffer.h"
 
-int main(_In_ int argc, _In_ char* argv[]) {
+int _Success_(return == 0) main(_In_ int argc, _In_ char* argv[]) {
   Config* config = NULL;
   bool result = GetConfig(config);
+  if(result == false){
+    return -1;
+  }
 
   GapBuffer* buffer = new_buffer(512);
   if(buffer == NULL){
@@ -18,6 +21,10 @@ int main(_In_ int argc, _In_ char* argv[]) {
 
   if(buffer){
     free_buffer(buffer);
+  }
+
+  if (config) {
+      FreeConfig(config);
   }
 
   return 0;

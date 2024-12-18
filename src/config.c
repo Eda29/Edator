@@ -13,8 +13,8 @@
     #include <KnownFolders.h>
     #include <Windows.h>
 
-    bool GetConfigDir(_Out_ char* path) {
-        PWSTR temp;
+    bool _Success_(return != false) GetConfigDir(_Out_ char* path) {
+        WCHAR* temp;
     
         HRESULT result = SHGetKnownFolderPath(&FOLDERID_LocalAppData, 0, NULL, &temp);
         if(FAILED(result)){
@@ -24,7 +24,7 @@
         }   
     
         //convert the wchar array to char*
-        wcstombs(path, temp, MAX_PATH);
+        wcstombs(path, temp, wcslen(temp));
         CoTaskMemFree(temp);    
     
         //Append the editors' specific path
@@ -36,7 +36,7 @@
 
 #endif
 
-bool GetConfig(_Out_ Config* config) {
+bool _Success_(return != false) GetConfig(_Out_opt_ Config* config) {
     char config_path[MAX_PATH];
     bool b = GetConfigDir(&config_path[0]);
     if(b == false){
@@ -63,29 +63,26 @@ bool GetConfig(_Out_ Config* config) {
       fclose(fp_Config);
       return false;
     }
-    if(feof(fp_Config) != 0){
-      free(data);
-      fclose(fp_Config);
-      return false;
-    }
 
     fclose(fp_Config);
 
-    config = malloc(sizeof(config));
+    data[f_size-1] = '\0';
+
+    config = malloc(sizeof(Config));
     if(config == NULL){
         free(data);
         return false;
     }
     
     //Parse the text file into the config object.
+    puts(data);
 
     free(data);
-
 
     return true;
 }
 
-void FreeConfig(Config* config) {
+void FreeConfig(_In_ Config* config) {
     if(!config){
         return;
     }
