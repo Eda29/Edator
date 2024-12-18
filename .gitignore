@@ -14,3 +14,8 @@ Text_Editor.vcxproj
 Text_Editor.vcxproj.filters
 ZERO_CHECK.vcxproj
 ZERO_CHECK.vcxproj.filters
+ALL_BUILD.vcxproj.user
+Text_Editor.vcxproj.user
+Text_Editor.dir
+Debug/
+.vs/
