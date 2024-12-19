@@ -7,7 +7,11 @@
 #include "config.h"
 #include "gap_buffer.h"
 
+#ifdef __linux__
+int main(int argc, char*  argv[]){
+#elif _WIN32
 int _Success_(return == 0) main(_In_ int argc, _In_ char* argv[]) {
+#endif
   Config* config = NULL;
   bool result = GetConfig(config);
   if(result == false){
