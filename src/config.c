@@ -78,7 +78,7 @@ bool _Success_(return != false) GetConfig(_Out_opt_ Config* config) {
       return false;
     }
     
-    int read_chunks = fread(data, f_size, 1, fp_Config);
+    size_t read_chunks = fread(data, f_size, 1, fp_Config);
     if(ferror(fp_Config) != 0 || read_chunks == 0){
       free(data);
       fclose(fp_Config);
