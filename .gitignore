@@ -18,5 +18,6 @@ ALL_BUILD.vcxproj.user
 Text_Editor.vcxproj.user
 Text_Editor.dir
 Debug/
+RelWithDbgInfo/
 .vs/
 .vscode/
