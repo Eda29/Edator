@@ -12,11 +12,11 @@ This is a simple text editor written in C. It provides basic functionalities to 
 ## Installation
 1. Clone the repository:
     ```sh
-    git clone https://github.com/Eda29/Text_Editor.git
+    git clone https://github.com/Eda29/Edator.git
     ```
 2. Navigate to the project directory:
     ```sh
-    cd Text_Editor
+    cd Edator
     ```
 3. Compile the program:
     ```sh
@@ -28,7 +28,7 @@ This is a simple text editor written in C. It provides basic functionalities to 
 ## Usage
 Run the text editor with the following command:
 ```sh
-./Text_Editor [filename]
+./Edator [filename]
 ```
 - If `[filename]` is provided, the editor will open that file.
 - If no filename is provided, a new file will be created.
