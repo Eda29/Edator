@@ -4,17 +4,21 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "editor_state.h"
 #include "config.h"
 #include "gap_buffer.h"
 
 #ifdef __linux__
+#include <ncurses.h>
+
 int main(int argc, char*  argv[]){
 #elif _WIN32
 int _Success_(return == 0) main(_In_ int argc, _In_ char* argv[]) {
 #endif
   Config* config = NULL;
-  bool result = GetConfig(config);
-  if(result == false){
+  bool result = GetConfig(&config);
+  if(result == false || config == NULL){
+    puts("boop");
     return -1;
   }
 
@@ -22,6 +26,73 @@ int _Success_(return == 0) main(_In_ int argc, _In_ char* argv[]) {
   if(buffer == NULL){
     return -1;
   }
+
+  WINDOW* main_window = initscr();
+  //notimeout(main_window, true);
+  keypad(main_window, true);
+
+  enum EDITOR_STATE state = COMMAND_MODE;
+
+  bool insert_char = config->default_insert_mode;
+  bool quit = false;
+  
+  while(quit == false) {
+    char* buffer_text = extract_text(buffer);
+    mvwprintw(main_window, 0, 0, "%s", buffer_text);
+    int ch = wgetch(main_window);
+    
+    switch(state){
+      case INSERT_MODE: {     
+        //ESCAPE?
+        if(ch == 27){
+          nodelay(main_window, TRUE);
+          ch = getch();
+          nodelay(main_window, FALSE);
+          if(ch == ERR) {
+            state = COMMAND_MODE;
+            //Don't add this to the fuckin' buffer mate.
+            break;
+          }
+        }
+
+        if(insert_char == false) {
+          delete(buffer);
+        }
+
+        insert_character(buffer, ch);
+
+        break;
+      }
+
+      case COMMAND_MODE: {
+          if(ch == 265) {
+        //if(ch == KEY_F(1)) {
+          state = INSERT_MODE;
+          break;
+        }
+
+        //ESCAPE
+        if(ch == 27){
+          nodelay(main_window, TRUE);
+          ch = wgetch(main_window);
+          nodelay(main_window, FALSE);
+          if(ch == ERR) {
+            quit = true;
+            break;
+          }
+        }
+        break;
+      }
+
+      case TERMINAL_MODE: {
+        break;
+      }
+    }
+
+    wrefresh(main_window);
+  }
+
+  endwin();
 
   if(buffer){
     free_buffer(buffer);

@@ -13,7 +13,7 @@ typedef struct Config{
 } Config;
 
 #ifdef __linux__
-bool GetConfig(Config* config);
+bool GetConfig(Config** config);
 void FreeConfig(Config* config);
 #elif _WIN32
 bool _Success_(return != false) GetConfig(_Out_opt_ Config* config);
