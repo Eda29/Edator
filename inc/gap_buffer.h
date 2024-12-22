@@ -5,6 +5,10 @@
 
 #define MIN_BUF_SIZE 128
 
+/*
+This specific implementation was stolen from a blog post that i do not remember. I will find it and give credit where it is due.
+*/
+
 typedef struct GapBuffer {
     size_t size;
     size_t cursor;
