@@ -13,8 +13,8 @@
 #define MAX_PATH 4096
 #endif
   
-bool GetConfigDir(char** path){
-  char* temp = malloc(sizeof(char) * MAX_PATH);
+bool GetConfigDir(char** path) {
+  char* temp;// = malloc(sizeof(char) * MAX_PATH);
   if((temp = getenv("XDG_CONFIG_HOME")) == NULL) {
     if((temp = getenv("HOME")) == NULL){
       temp = getpwuid(getuid())->pw_dir;
@@ -27,38 +27,32 @@ bool GetConfigDir(char** path){
   strcat(temp, "/edator");
   printf("Config Path: %s\n", temp);
   strcpy(*path, temp);
+  //free(temp);
   return true;
 }
 
 bool WriteDefaultConfig(char** path) {
+  size_t cfg_len = strlen("/config.cfg");
+  size_t difference = strlen(*path) - cfg_len;
+  char* temp = malloc(sizeof(char) * (strlen(*path) - cfg_len));
+  strncpy(temp, *path, difference);
+  temp[difference] = '\0';
+
   struct stat st = {0};
-  if(stat((*path), &st) == -1) {
-    mkdir((*path), 0700);
-  }    
-  
-  char* filepath = malloc(sizeof(char) * (strlen(*path) + strlen("/config.cfg")));
-  if(filepath == NULL){
-    return false;
+  if(stat(temp, &st) == -1) {
+    mkdir(temp, 0700);
   }
-  
-  strcat(filepath, *path);
-  strcat(filepath, "/config.cfg");
-  
-  FILE* file = fopen(filepath, "w");
+
+  free(temp);
+
+  FILE* file = fopen(*path, "w");
   if(file == NULL) {
-    free(filepath);
     return false;
   }
   
-  free(filepath);
-  
-  Config config;
-  config.default_insert_mode = false;
-  config.use_external_scripts = false;
-  
-  int written = fwrite(&config, sizeof config, 1, file);
-  //TODO: add check for this!
-  
+  fprintf(file, "default_insert_mode=false\n");
+  fprintf(file, "use_external_scripts=false\n");
+
   fclose(file);
   
   return true;
@@ -75,6 +69,8 @@ bool GetConfig(Config** config) {
     free(config_path);
     return false;
   }
+
+  strcat(config_path, "/config.cfg");
   
   FILE* fp_Config = fopen(config_path, "r");
   if (fp_Config == NULL) {
@@ -111,8 +107,16 @@ bool GetConfig(Config** config) {
       return false;
   }
   
-  //Parse the text file into the config object.
-  puts(data);
+  char* token = strtok(data, "\n");
+  while(token != NULL){
+    if(strncmp(token, "default_insert_mode=", 20) == 0){
+      (*config)->default_insert_mode = (strncmp(token + 20, "true", 4) == 0);
+    }
+    else if(strncmp(token, "use_external_scripts=", 21) == 0){
+      (*config)->use_external_scripts = (strncmp(token + 21, "true", 4) == 0);
+    }
+    token = strtok(NULL, "\n");
+  }
   
   free(data);
   free(config_path);
