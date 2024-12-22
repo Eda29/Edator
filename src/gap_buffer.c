@@ -2,14 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#ifdef __linux__
 #include <sys/param.h>
-#elif _WIN32
-//Windows implementation and headers
-#include <Windows.h>
-#include <minwindef.h>
-#define MAX max
-#endif
+
 
 GapBuffer* new_buffer(size_t init_size){
     GapBuffer* buffer = malloc(sizeof(*buffer));

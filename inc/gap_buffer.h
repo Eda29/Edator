@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#define MIN_BUF_SIZE 1024
+#define MIN_BUF_SIZE 128
 
 typedef struct GapBuffer {
     size_t size;

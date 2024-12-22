@@ -11,8 +11,3 @@ if (UNIX)
     include_directories(${CURSES_INCLUDE_DIR})
     target_link_libraries(Text_Editor ${CURSES_LIBRARY})
 endif()
-
-
-if(MSVC)
-    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
-endif()
