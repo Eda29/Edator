@@ -1,4 +1,4 @@
-#Edator
+# Edator
 
 ## Overview
 This is a simple text editor written in C. It provides basic functionalities to create, edit, and save text files.
