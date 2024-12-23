@@ -24,8 +24,8 @@ bool GetConfigDir(char** path) {
       strcat(temp, "/.config");
     }
   }
+  
   strcat(temp, "/edator");
-  printf("Config Path: %s\n", temp);
   strcpy(*path, temp);
   //free(temp);
   return true;
