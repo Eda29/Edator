@@ -32,7 +32,23 @@ int main(int argc, char*  argv[]){
   bool insert_char = config->default_insert_mode;
   bool quit = false;
   
+  if(argc > 1) {
+    FILE* file = fopen(argv[1], "r");
+    if(file == NULL) {
+      puts("Failed to open file.");
+      return -1;
+    }
+
+    char c;
+    while((c = fgetc(file)) != EOF) {
+      insert_character(buffer, c);
+    }
+
+    fclose(file);
+  }
+
   while(quit == false) {
+    noecho();
     char* buffer_text = extract_text(buffer);
     mvwprintw(main_window, 0, 0, "%s", buffer_text);
     int ch = wgetch(main_window);
@@ -50,7 +66,14 @@ int main(int argc, char*  argv[]){
             break;
           }
         }
-
+        else if (ch == KEY_BACKSPACE){
+          backspace(buffer);
+          break;
+        }else if (ch == KEY_DL){
+          delete(buffer);
+          break;
+        }
+        
         if(insert_char == false) {
           delete(buffer);
         }
